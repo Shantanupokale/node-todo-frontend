@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
 import { TodoService } from "../services/TodoService";
+import Toast from "./ui/Toast";
+import { useToast } from "../hooks/useToast";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(true);
+  const { toast, showToast } = useToast();
 
   const fetchTodos = async () => {
     try {
@@ -35,6 +38,7 @@ try {
         status: "in-progress",
    });
       setTodos((prev) => [...prev, created]);
+      showToast("Todo created successfully", "success");
       setTitle("");
       setDescription("");
     } catch (err) {
@@ -47,6 +51,7 @@ try {
   try {
       await TodoService.deleteTodo(id);
       setTodos((prev) => prev.filter((todo) => todo.id !== id));
+      showToast("Todo deleted successfully","error")
     } catch (err) {
       console.error(err.message);
     }
@@ -65,6 +70,7 @@ try {
       setTodos((prev) =>
         prev.map((todo) =>  todo.id === id ? updated : todo)
       );
+      showToast("Todo updated", "info");
     } catch (err) {
       console.error(err.message);
     }
@@ -74,6 +80,8 @@ try {
 
   return (
     <>
+    <Toast message={toast?.message} type={toast?.type} />
+
     <div className="flex flex-row gap-3 mb-6 max-h-12">
      <input
           type="text"
