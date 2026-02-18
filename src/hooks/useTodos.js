@@ -5,7 +5,7 @@ export const useTodos = (showToast) => {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
-
+  const [filterStatus, setFilterStatus] = useState("all");
   const fetchTodos = async () => {
     try {
       const data = await TodoService.getTodos();
@@ -17,6 +17,12 @@ export const useTodos = (showToast) => {
       setLoading(false);
     }
   };
+
+
+  const filteredTodos =
+  filterStatus === "all"
+    ? todos
+    : todos.filter((todo) => todo.status === filterStatus);
 
   
   useEffect(() => {
@@ -82,13 +88,15 @@ export const useTodos = (showToast) => {
 };
 
   return {
-    todos,
+    todos: filteredTodos,
     loading,
     addTodo,
     deleteTodo,
     updateStatus,
     editTodo,
     startEdit,
-    editingId
+    editingId,
+    filterStatus,
+  setFilterStatus
   };
 };

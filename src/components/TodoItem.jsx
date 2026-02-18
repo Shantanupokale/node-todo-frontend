@@ -27,7 +27,7 @@ const handleKeyDown = (e) => {
 
   return (
     <>
-      <div className="flex items-center justify-between bg-gray-100 p-8 rounded-lg">
+    <div className="flex items-center justify-between bg-gray-100 p-4 rounded-lg">
         <div className="flex items-center gap-3">
         <input
               type="checkbox"
