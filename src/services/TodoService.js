@@ -1,4 +1,4 @@
-const BASE_URL = "https://node-todo-backend.vercel.app/api/todos";
+const BASE_URL = `${import.meta.env.VITE_BASE_URL}/api/todos`;
 
 const getTodos = async () => {
   const res = await fetch(BASE_URL);
