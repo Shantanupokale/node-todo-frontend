@@ -27,7 +27,7 @@ const handleKeyDown = (e) => {
 
   return (
     <>
-    <div className="flex items-center justify-between bg-gray-100 p-4 rounded-lg">
+    <div className="flex items-center justify-between bg-gray-100 p-3 rounded-lg">
         <div className="flex items-center gap-3">
         <input
               type="checkbox"
@@ -43,7 +43,7 @@ const handleKeyDown = (e) => {
               onChange={(e) => setEditedTitle(e.target.value)}
               onKeyDown={handleKeyDown}
               autoFocus
-              className="px-2 py-1 rounded border border-gray-300 outline-none"
+              className="px-2 py-1 rounded border border-gray-300 outline-none text-sm"
               /> 
 
               <input
@@ -51,7 +51,7 @@ const handleKeyDown = (e) => {
                 value={editedDescription}
                 onChange={(e) => setEditedDescription(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="px-2 py-1 rounded border border-gray-300 outline-none text-sm"
+                className="px-2 py-1 rounded border border-gray-300 outline-none text-xs"
                 />
             </div>
             
@@ -68,10 +68,10 @@ const handleKeyDown = (e) => {
           <span
             className={`text-lg ${
               todo.status === "complete"
-                ? "line-through text-gray-400"
+                ? "line-through text-gray-400 text-sm"
                 : ""}`}>
             {todo.title}
-            <div className="text-sm text-gray-400">
+            <div className=" text-gray-400 text-xs">
               {todo.description}
             </div>
           </span>

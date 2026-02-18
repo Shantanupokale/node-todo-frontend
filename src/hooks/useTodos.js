@@ -5,29 +5,33 @@ export const useTodos = (showToast) => {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
-  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(4);
+  const [totalPages, setTotalPages] = useState(1);
+
+
   const fetchTodos = async () => {
-    try {
-      const data = await TodoService.getTodos();
-      setTodos(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error(err.message);
-      setTodos([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const response = await TodoService.getTodos(page, limit);
+    setTodos(response.data);
+    setTotalPages(response.pagination.totalPages);
+  } catch (err) {
+    console.error(err.message);
+    setTodos([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
 
-  const filteredTodos =
-  filterStatus === "all"
-    ? todos
-    : todos.filter((todo) => todo.status === filterStatus);
-
+  const filteredTodos = !filterStatus
+  ? todos
+  : todos.filter((todo) => todo.status === filterStatus);
   
   useEffect(() => {
     fetchTodos();
-  }, []);
+  }, [page,limit]);
 
   const addTodo = async (title, description) => {
     if (!title || !description) return;
@@ -97,6 +101,11 @@ export const useTodos = (showToast) => {
     startEdit,
     editingId,
     filterStatus,
-  setFilterStatus
+    setFilterStatus,
+    page,
+    setPage,
+    limit,
+    setLimit,
+    totalPages,
   };
 };

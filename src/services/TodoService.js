@@ -1,11 +1,13 @@
 const BASE_URL = `${import.meta.env.VITE_BASE_URL}/api/todos`;
 
-const getTodos = async () => {
-  const res = await fetch(BASE_URL);
+const getTodos = async (page = 1, limit = 5) => {
+  const res = await fetch(
+    `${BASE_URL}?page=${page}&limit=${limit}`
+  );
+
   if (!res.ok) throw new Error("Failed to fetch todos");
 
-  const json = await res.json();
-  return json.data; 
+  return await res.json();
 };
 
 const getTodoById = async (id) => {
