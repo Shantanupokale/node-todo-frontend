@@ -18,7 +18,7 @@ const TodoList = () => {
  <>
   <Toast message={toast?.message} type={toast?.type} />
   <TodoForm onAdd={addTodo} />
-  <div className="flex items-center justify-between mb-6 mt-4">
+  <div className="flex items-center justify-between mb-3 mt-2 ">
     <StatusFilter
       value={filterStatus}
       onChange={setFilterStatus}

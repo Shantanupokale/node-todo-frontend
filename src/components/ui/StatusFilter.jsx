@@ -9,11 +9,15 @@ const StatusFilter = ({ value, onChange }) => {
   ];
 
   return (
-    <div className="flex items-center gap-8 mb-4">
+    <div className="flex items-center gap-6 py-3 border-gray-200">
       {options.map((option) => (
         <label
           key={option.label}
-          className="flex items-center gap-2 cursor-pointer text-xs tracking-wide"
+          className={`flex items-center gap-2 cursor-pointer text-[11px] font-medium tracking-wide transition ${
+            value === option.value
+              ? "text-black"
+              : "text-gray-400 hover:text-gray-800"
+          }`}
         >
           <input
             type="radio"
@@ -21,11 +25,9 @@ const StatusFilter = ({ value, onChange }) => {
             value={option.value}
             checked={value === option.value}
             onChange={(e) => onChange(e.target.value)}
-            className="accent-blue-600 w-4 h-4"
+            className="accent-blue-600 w-3 h-3"
           />
-          <span className=" text-gray-700">
-            {option.label}
-          </span>
+          {option.label}
         </label>
       ))}
     </div>

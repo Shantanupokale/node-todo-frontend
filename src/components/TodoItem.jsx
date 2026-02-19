@@ -105,7 +105,10 @@ const handleKeyDown = (e) => {
         title="Delete Todo" onConfirm={handleDeleteConfirm}
         confirmText="Yes, Delete"  
         cancelText="Cancel" >
-        Are you sure you want to delete this todo?
+        Are you sure you want to delete this todo 
+        <span className="font-semibold text-gray-900">
+      " {todo.title} "
+    </span> ?
       </Modal>
     </>
   );

@@ -13,7 +13,7 @@ const TodoForm = ({ onAdd }) => {
   };
 
   return (
-    <div className="flex flex-row gap-3 mb-6 max-h-12">
+    <div className="flex flex-row gap-3 mb-2 max-h-12">
       <input
         type="text"
         placeholder="Enter title"
