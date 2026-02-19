@@ -2,15 +2,17 @@ import { useToast } from "../hooks/useToast";
 import { useTodos } from "../hooks/useTodos";
 import TodoForm from "./Todoform";
 import TodoItem from "./TodoItem";
+import BookmarkToggle from "./ui/BookmarkToggle";
 import PageController from "./ui/PageController";
 import RecordController from "./ui/RecordController";
+import Searchbox from "./ui/Searchbox";
 import StatusFilter from "./ui/StatusFilter";
 import Toast from "./ui/Toast";
 
 const TodoList = () => {
   const { toast, showToast } = useToast();
   const { todos, deleteTodo , updateStatus, editTodo, loading,  addTodo, startEdit ,
-     editingId, filterStatus, setFilterStatus , page ,limit ,setPage ,setLimit ,totalPages
+     editingId, filterStatus, setFilterStatus , page ,limit ,setPage ,setLimit ,totalPages , search ,setSearch , showBookmarked ,setShowBookmarked ,toggleBookmark
   } = useTodos(showToast);
 
   
@@ -18,13 +20,18 @@ const TodoList = () => {
  <>
   <Toast message={toast?.message} type={toast?.type} />
   <TodoForm onAdd={addTodo} />
+  <Searchbox search={search} setPage={setPage} setSearch={setSearch} />
+  
   <div className="flex items-center justify-between mb-3 mt-2 ">
     <StatusFilter
       value={filterStatus}
       onChange={setFilterStatus}
     />
 
-    <RecordController limit={limit} setLimit={setLimit} setPage={setPage}/>
+      <div className="flex flex-row gap-4 items-center">
+          <BookmarkToggle  setPage={setPage} setShowBookmarked={setShowBookmarked} showBookmarked={showBookmarked}/>
+          <RecordController limit={limit} setLimit={setLimit} setPage={setPage}/>
+      </div>
   </div>
 
   {loading ? (
@@ -40,10 +47,13 @@ const TodoList = () => {
           onEdit={editTodo}
           onStartEdit={startEdit}
           editingId={editingId}
+          onToggleBookmark={toggleBookmark} 
         />
       ))}
     </div>
   )}
+
+
 
  <PageController page={page} setPage={setPage} totalPages={totalPages} />
   

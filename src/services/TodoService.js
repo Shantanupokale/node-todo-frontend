@@ -1,12 +1,14 @@
 const BASE_URL = `${import.meta.env.VITE_BASE_URL}/api/todos`;
 
-const getTodos = async (page = 1, limit = 5) => {
-  const res = await fetch(
-    `${BASE_URL}?page=${page}&limit=${limit}`
-  );
+const getTodos = async (page = 1, limit = 5, search = "" , bookmarked = false) => {
 
+  let url = `${BASE_URL}?page=${page}&limit=${limit}`;
+  if (search) { url = url + `&search=${search}`;}
+  if (bookmarked) { url = url + `&bookmarked=true`; }
+
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch todos");
-
+  
   return await res.json();
 };
 
@@ -59,10 +61,21 @@ const deleteTodo = async (id) => {
   return json.data;
 };
 
+const toggleBookmark = async (id) => {
+  const res = await fetch(`${BASE_URL}/${id}/bookmark`, {
+    method: "PATCH"
+  });
+
+  if (!res.ok) throw new Error("Failed to toggle bookmark");
+
+  return await res.json();
+};
+
 export const TodoService = {
   getTodos,
   getTodoById,
   createTodo,
   updateTodo,
   deleteTodo,
+  toggleBookmark
 };

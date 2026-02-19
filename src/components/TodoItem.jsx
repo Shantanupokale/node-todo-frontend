@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Trash2 , Pencil} from "lucide-react";
+import { Trash2 , Pencil, Heart } from "lucide-react";
 import Modal from "./ui/Modal";
 import { STATUS, statusStyles } from "../constants/statusStyles";
 
-const TodoItem = ({ todo, onDelete, onStatusChange , onEdit , onStartEdit , editingId }) => {
+const TodoItem = ({ todo, onDelete, onStatusChange , onEdit , onStartEdit , editingId , onToggleBookmark}) => {
 const [isModalOpen, setIsModalOpen] = useState(false);
 const [editedTitle, setEditedTitle] = useState(todo.title);
 const [editedDescription, setEditedDescription] = useState(todo.description);
@@ -98,6 +98,9 @@ const handleKeyDown = (e) => {
             className="text-gray-600 hover:text-red-500 ">
             <Trash2 size={18} />
           </button>
+         <button onClick={() => onToggleBookmark(todo.id)}>
+          {todo.bookmarked ? <Heart fill="red" color="red" size={18} /> : <Heart size={18} />}
+        </button>
         </div>
       </div>
 

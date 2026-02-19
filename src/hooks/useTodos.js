@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { TodoService } from "../services/TodoService";
+import { useSearch } from "./useSearch";
 
 export const useTodos = (showToast) => {
   const [todos, setTodos] = useState([]);
@@ -9,11 +10,14 @@ export const useTodos = (showToast) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(4);
   const [totalPages, setTotalPages] = useState(1);
+  // const [search, setSearch] = useState("");
+  const { search, setSearch, debouncedSearch } = useSearch(500);
+  const [showBookmarked, setShowBookmarked] = useState(false);
 
 
   const fetchTodos = useCallback(async () => {
   try {
-    const response = await TodoService.getTodos(page, limit);
+    const response = await TodoService.getTodos(page, limit, debouncedSearch , showBookmarked);
     setTodos(response.data);
     setTotalPages(response.pagination.totalPages);
   } catch (err) {
@@ -22,7 +26,7 @@ export const useTodos = (showToast) => {
   } finally {
     setLoading(false);
   }
-},[page, limit]);
+},[page, limit ,debouncedSearch , showBookmarked]);
 
 
   const filteredTodos = !filterStatus
@@ -31,7 +35,7 @@ export const useTodos = (showToast) => {
   
   useEffect(() => {
     fetchTodos();
-  }, [page,limit]);
+  }, [page,limit,debouncedSearch,showBookmarked]);
 
   const addTodo = async (title, description) => {
     if (!title || !description) return;
@@ -93,6 +97,15 @@ export const useTodos = (showToast) => {
   showToast("Todo updated successfully", "info");
 };
 
+const toggleBookmark = async (id) => {
+  try {
+    const response = await TodoService.toggleBookmark(id);
+    setTodos((prev) =>  prev.map((t) => t.id === id ? response.data : t ));
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
   return {
     todos: filteredTodos,
     loading,
@@ -109,5 +122,10 @@ export const useTodos = (showToast) => {
     limit,
     setLimit,
     totalPages,
+    search,
+    setSearch,
+    showBookmarked,
+    setShowBookmarked,
+    toggleBookmark
   };
 };
