@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TodoService } from "../services/TodoService";
 
 export const useTodos = (showToast) => {
@@ -11,7 +11,7 @@ export const useTodos = (showToast) => {
   const [totalPages, setTotalPages] = useState(1);
 
 
-  const fetchTodos = async () => {
+  const fetchTodos = useCallback(async () => {
   try {
     const response = await TodoService.getTodos(page, limit);
     setTodos(response.data);
@@ -22,7 +22,7 @@ export const useTodos = (showToast) => {
   } finally {
     setLoading(false);
   }
-};
+},[page, limit]);
 
 
   const filteredTodos = !filterStatus
@@ -42,13 +42,15 @@ export const useTodos = (showToast) => {
       status: "in-progress",
     });
 
-    setTodos((prev) => [...prev, created]);
-    showToast("Todo created successfully", "success");
+  //setTodos((prev) => [...prev, created]);
+  fetchTodos();
+  showToast("Todo created successfully", "success");
   };
 
   const deleteTodo = async (id) => {
     await TodoService.deleteTodo(id);
-    setTodos((prev) => prev.filter((t) => t.id !== id));
+    //setTodos((prev) => prev.filter((t) => t.id !== id));
+    fetchTodos();
     showToast("Todo deleted successfully", "error");
   };
 
