@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Star } from "lucide-react";
+import { Star, Heart } from "lucide-react";
 
 const LandingPage = () => {
   return (
@@ -44,8 +44,8 @@ const LandingPage = () => {
           </div>
         </div>
 
-
-        <div className="mt-8  mb-20 flex justify-center ">
+ 
+        <div className="mt-8 flex justify-center ">
           <Link to="/register"
             className="inline-flex items-center gap-2 bg-black text-white px-10 py-4 rounded-md font-medium hover:bg-white hover:text-black border border-transparent hover:border-black transition-all shadow-xl hover:shadow-2xl">
             Start for free
@@ -53,6 +53,20 @@ const LandingPage = () => {
           </Link>
         </div>
       </main>
+
+      <footer className="py-8 flex items-center justify-center gap-1.5 text-gray-400 text-[11px] font-medium tracking-tight">
+        <span>Made with</span>
+        <Heart size={10} className="fill-red-400 text-red-400" />
+        <span>by</span>
+        <a
+          href="https://github.com/Shantanupokale/node-todo-frontend"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-black hover:underline underline-offset-2"
+        >
+          shantanu
+        </a>
+      </footer>
     </div>
   );
 };
