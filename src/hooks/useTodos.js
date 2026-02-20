@@ -16,41 +16,41 @@ export const useTodos = (showToast) => {
 
 
   const fetchTodos = useCallback(async () => {
-  try {
+    try {
     const response = await TodoService.getTodos(page, limit, debouncedSearch , showBookmarked);
-    setTodos(response.data);
-    setTotalPages(response.pagination.totalPages);
-  } catch (err) {
-    console.error(err.message);
-    setTodos([]);
-  } finally {
-    setLoading(false);
-  }
+      setTodos(response.data);
+      setTotalPages(response.pagination.totalPages);
+    } catch (err) {
+      console.error(err.message);
+      setTodos([]);
+    } finally {
+      setLoading(false);
+    }
 },[page, limit ,debouncedSearch , showBookmarked]);
 
 
   const filteredTodos = !filterStatus
-  ? todos
-  : todos.filter((todo) => todo.status === filterStatus);
-  
+    ? todos
+    : todos.filter((todo) => todo.status === filterStatus);
+
   useEffect(() => {
     fetchTodos();
-  }, [page,limit,debouncedSearch,showBookmarked]);
+  }, [page, limit, debouncedSearch, showBookmarked]);
 
-const addTodo = async (title, description, categoryId) => {
-  try {
-    await TodoService.createTodo({
-      title,
-      description,
-      category_id: categoryId || null
-    });
+  const addTodo = async (title, description, categoryId) => {
+    try {
+      await TodoService.createTodo({
+        title,
+        description,
+        category_id: categoryId || null,
+      });
 
-    fetchTodos();
-    showToast("Todo created successfully", "success");
-  } catch (err) {
-    console.error(err.message);
-  }
-};
+      fetchTodos();
+      showToast("Todo created successfully", "success");
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   const deleteTodo = async (id) => {
     await TodoService.deleteTodo(id);
@@ -78,35 +78,33 @@ const addTodo = async (title, description, categoryId) => {
   };
 
   const startEdit = (id) => {
-  setEditingId(id);
-};
+    setEditingId(id);
+  };
 
- const editTodo = async (id, newTitle, newDescription) => {
-  const existing = todos.find((t) => t.id === id);
-  if (!existing) return;
+  const editTodo = async (id, newTitle, newDescription) => {
+    const existing = todos.find((t) => t.id === id);
+    if (!existing) return;
 
-  const updated = await TodoService.updateTodo(id, {
-    title: newTitle,
-    description: newDescription,
-    status: existing.status,
-  });
+    const updated = await TodoService.updateTodo(id, {
+      title: newTitle,
+      description: newDescription,
+      status: existing.status,
+    });
 
-  setTodos((prev) =>
-    prev.map((t) => (t.id === id ? updated : t))
-  );
+    setTodos((prev) => prev.map((t) => (t.id === id ? updated : t)));
 
-  setEditingId(null);
-  showToast("Todo updated successfully", "info");
-};
+    setEditingId(null);
+    showToast("Todo updated successfully", "info");
+  };
 
-const toggleBookmark = async (id) => {
-  try {
-    const response = await TodoService.toggleBookmark(id);
-    setTodos((prev) =>  prev.map((t) => t.id === id ? response.data : t ));
-  } catch (err) {
-    console.error(err.message);
-  }
-};
+  const toggleBookmark = async (id) => {
+    try {
+      const response = await TodoService.toggleBookmark(id);
+      setTodos((prev) => prev.map((t) => (t.id === id ? response.data : t)));
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   return {
     todos: filteredTodos,
@@ -128,6 +126,7 @@ const toggleBookmark = async (id) => {
     setSearch,
     showBookmarked,
     setShowBookmarked,
-    toggleBookmark
+    toggleBookmark,
+    fetchTodos,
   };
 };

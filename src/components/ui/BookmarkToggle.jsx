@@ -4,6 +4,7 @@ const BookmarkToggle = ({setPage, setShowBookmarked ,showBookmarked}) => {
   return (
     <div>
       <button
+      title="bookmark"
         onClick={() => {
           setShowBookmarked((prev) => !prev);
           setPage(1);

@@ -16,12 +16,11 @@ const TodoList = () => {
   const { toast, showToast } = useToast();
   const [viewMode, setViewMode] = useState("list");
   const { todos, deleteTodo , updateStatus, editTodo, loading,  addTodo, startEdit ,
-     editingId, filterStatus, setFilterStatus , page ,limit ,setPage ,setLimit ,totalPages , search ,setSearch , showBookmarked ,setShowBookmarked ,toggleBookmark
+     editingId, filterStatus, setFilterStatus , page ,limit ,setPage ,setLimit ,totalPages , search ,setSearch , showBookmarked ,setShowBookmarked ,toggleBookmark ,fetchTodos
   } = useTodos(showToast);
 
   useEffect(() => {
     if (viewMode === "kanban") {
-      // hardcoeded limit for 1000 todos 
       setLimit(1000);
       setPage(1);
     } else {
@@ -80,6 +79,7 @@ const TodoList = () => {
               onStartEdit={startEdit}
               editingId={editingId}
               onToggleBookmark={toggleBookmark}
+              onRefresh={fetchTodos}
             />
           ))}
         </div>
