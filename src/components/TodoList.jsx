@@ -8,56 +8,89 @@ import RecordController from "./ui/RecordController";
 import Searchbox from "./ui/Searchbox";
 import StatusFilter from "./ui/StatusFilter";
 import Toast from "./ui/Toast";
+import { LayoutPanelLeft, List as ListIcon } from "lucide-react";
+import KanbanView from "./KanbanView";
+import { useState, useEffect } from "react";
 
 const TodoList = () => {
   const { toast, showToast } = useToast();
+  const [viewMode, setViewMode] = useState("list");
   const { todos, deleteTodo , updateStatus, editTodo, loading,  addTodo, startEdit ,
      editingId, filterStatus, setFilterStatus , page ,limit ,setPage ,setLimit ,totalPages , search ,setSearch , showBookmarked ,setShowBookmarked ,toggleBookmark
   } = useTodos(showToast);
 
-  
+  useEffect(() => {
+    if (viewMode === "kanban") {
+      // hardcoeded limit for 1000 todos 
+      setLimit(1000);
+      setPage(1);
+    } else {
+      setLimit(4);
+    }
+  }, [viewMode, setLimit, setPage]);
+
   return (
- <>
-  <Toast message={toast?.message} type={toast?.type} />
-  <TodoForm onAdd={addTodo} /> 
-  <Searchbox search={search} setPage={setPage} setSearch={setSearch} />
-  
-  <div className="flex items-center justify-between mb-3 mt-2 ">
-    <StatusFilter
-      value={filterStatus}
-      onChange={setFilterStatus}
-    />
-
-      <div className="flex flex-row gap-4 items-center">
-          <BookmarkToggle  setPage={setPage} setShowBookmarked={setShowBookmarked} showBookmarked={showBookmarked}/>
-          <RecordController limit={limit} setLimit={setLimit} setPage={setPage}/>
+    <>
+      <Toast message={toast?.message} type={toast?.type} />
+      <TodoForm onAdd={addTodo} />
+      <div className="flex items-center justify-between gap-4 mb-3">
+        <div className="flex-1">
+          <Searchbox search={search} setPage={setPage} setSearch={setSearch} />
+        </div>
+        <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg border border-gray-200 shadow-sm">
+          <button onClick={() => setViewMode("list")}
+            className={`p-1.5 rounded-md transition-all ${viewMode === "list" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-gray-600"}`}
+            title="List View" >
+            <ListIcon size={18} />
+          </button>
+          <button onClick={() => setViewMode("kanban")}
+            className={`p-1.5 rounded-md transition-all ${viewMode === "kanban" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-gray-600"}`}
+            title="Kanban View" >
+            <LayoutPanelLeft size={18} />
+          </button>
+        </div>
       </div>
-  </div>
 
-  {loading ? (
-    <p className="text-center text-gray-500">Loading Todos...</p>
-  ) : (
-    <div className="space-y-4">
-      {todos.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          onDelete={deleteTodo}
-          onStatusChange={updateStatus}
-          onEdit={editTodo}
-          onStartEdit={startEdit}
-          editingId={editingId}
-          onToggleBookmark={toggleBookmark} 
-        />
-      ))}
-    </div>
-  )}
+      <div className="flex items-center justify-between mb-3 mt-2 ">
+        <StatusFilter value={filterStatus} onChange={setFilterStatus} />
 
+        <div className="flex flex-row gap-4 items-center">
+          <BookmarkToggle
+            setPage={setPage}
+            setShowBookmarked={setShowBookmarked}
+            showBookmarked={showBookmarked} />
+          <RecordController
+            limit={limit}
+            setLimit={setLimit}
+            setPage={setPage} />
+        </div>
+      </div>
 
+      {loading ? (
+        <p className="text-center text-gray-500">Loading Todos...</p>
+      ) : viewMode === "list" ? (
+        <div className="space-y-4">
+          {todos.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onDelete={deleteTodo}
+              onStatusChange={updateStatus}
+              onEdit={editTodo}
+              onStartEdit={startEdit}
+              editingId={editingId}
+              onToggleBookmark={toggleBookmark}
+            />
+          ))}
+        </div>
+      ) : (
+        <KanbanView todos={todos} onStatusChange={updateStatus} />
+      )}
 
- <PageController page={page} setPage={setPage} totalPages={totalPages} />
-  
-</>
+      {viewMode === "list" && (
+        <PageController page={page} setPage={setPage} totalPages={totalPages} />
+      )}
+    </>
   );
 };
 

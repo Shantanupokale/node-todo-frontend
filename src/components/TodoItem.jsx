@@ -80,7 +80,7 @@ const handleKeyDown = (e) => {
 
         <div className="flex items-center gap-3 ">
           {todo.category_name && (
-        <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">
+        <span className="text-[11px] bg-blue-100 text-blue-600 px-2 py-1 uppercase italic rounded">
           {todo.category_name}
         </span>
       )}
