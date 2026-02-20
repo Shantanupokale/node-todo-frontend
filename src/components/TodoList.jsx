@@ -19,7 +19,7 @@ const TodoList = () => {
   return (
  <>
   <Toast message={toast?.message} type={toast?.type} />
-  <TodoForm onAdd={addTodo} />
+  <TodoForm onAdd={addTodo} /> 
   <Searchbox search={search} setPage={setPage} setSearch={setSearch} />
   
   <div className="flex items-center justify-between mb-3 mt-2 ">
@@ -35,7 +35,7 @@ const TodoList = () => {
   </div>
 
   {loading ? (
-    <p className="text-center text-gray-500">Loading...</p>
+    <p className="text-center text-gray-500">Loading Todos...</p>
   ) : (
     <div className="space-y-4">
       {todos.map((todo) => (

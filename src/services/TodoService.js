@@ -1,14 +1,21 @@
 const BASE_URL = `${import.meta.env.VITE_BASE_URL}/api/todos`;
 
+const authHeaders = () => ({
+  "Content-Type": "application/json",
+  "Authorization": `Bearer ${localStorage.getItem("token")}`,
+});
+
 const getTodos = async (page = 1, limit = 5, search = "" , bookmarked = false) => {
 
   let url = `${BASE_URL}?page=${page}&limit=${limit}`;
   if (search) { url = url + `&search=${search}`;}
   if (bookmarked) { url = url + `&bookmarked=true`; }
 
-  const res = await fetch(url);
+  const res = await fetch(url , {
+    headers: authHeaders(),
+   });
   if (!res.ok) throw new Error("Failed to fetch todos");
-  
+
   return await res.json();
 };
 
@@ -23,9 +30,7 @@ const getTodoById = async (id) => {
 const createTodo = async (data) => {
   const res = await fetch(BASE_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: authHeaders() ,
     body: JSON.stringify(data),
   });
 
@@ -38,9 +43,7 @@ const createTodo = async (data) => {
 const updateTodo = async (id, data) => {
   const res = await fetch(`${BASE_URL}/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: authHeaders() ,
     body: JSON.stringify(data),
   });
 
@@ -53,6 +56,7 @@ const updateTodo = async (id, data) => {
 const deleteTodo = async (id) => {
   const res = await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
+    headers: authHeaders() ,
   });
 
   if (!res.ok) throw new Error("Failed to delete todo");
@@ -63,7 +67,8 @@ const deleteTodo = async (id) => {
 
 const toggleBookmark = async (id) => {
   const res = await fetch(`${BASE_URL}/${id}/bookmark`, {
-    method: "PATCH"
+    method: "PATCH",
+    headers: authHeaders() ,
   });
 
   if (!res.ok) throw new Error("Failed to toggle bookmark");
