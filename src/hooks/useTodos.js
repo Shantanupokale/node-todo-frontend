@@ -37,19 +37,20 @@ export const useTodos = (showToast) => {
     fetchTodos();
   }, [page,limit,debouncedSearch,showBookmarked]);
 
-  const addTodo = async (title, description) => {
-    if (!title || !description) return;
-
-    const created = await TodoService.createTodo({
+const addTodo = async (title, description, categoryId) => {
+  try {
+    await TodoService.createTodo({
       title,
       description,
-      status: "in-progress",
+      category_id: categoryId || null
     });
 
-  //setTodos((prev) => [...prev, created]);
-  fetchTodos();
-  showToast("Todo created successfully", "success");
-  };
+    fetchTodos();
+    showToast("Todo created successfully", "success");
+  } catch (err) {
+    console.error(err.message);
+  }
+};
 
   const deleteTodo = async (id) => {
     await TodoService.deleteTodo(id);
@@ -68,10 +69,11 @@ export const useTodos = (showToast) => {
       status,
     });
 
-    setTodos((prev) =>
-      prev.map((t) => (t.id === id ? updated : t))
-    );
+    // setTodos((prev) =>
+    //   prev.map((t) => (t.id === id ? updated : t))
+    // );
 
+    fetchTodos();
     showToast("Todo updated", "info");
   };
 

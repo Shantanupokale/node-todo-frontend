@@ -27,7 +27,7 @@ const handleKeyDown = (e) => {
 
   return (
     <>
-    <div className="flex items-center justify-between bg-gray-100 p-3 rounded-lg">
+    <div className="flex items-center justify-between bg-gray-100 p-3 rounded-lg gap-3 ">
         <div className="flex items-center gap-3">
         <input
               type="checkbox"
@@ -79,6 +79,11 @@ const handleKeyDown = (e) => {
         </div>
 
         <div className="flex items-center gap-3 ">
+          {todo.category_name && (
+        <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">
+          {todo.category_name}
+        </span>
+      )}
           <select
           value={todo.status}
           onChange={(e) => onStatusChange(todo.id, e.target.value)}
@@ -88,7 +93,7 @@ const handleKeyDown = (e) => {
           <option value={STATUS.COMPLETE}>complete</option>
 
           </select>
-
+       
         <button  onClick={() => onStartEdit(todo.id)} className="text-gray-600 hover:text-blue-500">
             <Pencil size={18} />
           </button>
@@ -102,7 +107,7 @@ const handleKeyDown = (e) => {
           {todo.bookmarked ? <Heart fill="red" color="red" size={18} /> : <Heart size={18} />}
         </button>
         </div>
-      </div>
+  </div>
 
   <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}
         title="Delete Todo" onConfirm={handleDeleteConfirm}

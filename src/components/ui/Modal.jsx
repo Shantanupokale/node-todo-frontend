@@ -15,11 +15,11 @@ const Modal = ({
     </div>
     <div className="flex justify-end gap-3">
 
-        <button onClick={onClose} className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100" >
+        <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100" >
         {cancelText}
         </button>
 
-        <button onClick={onConfirm} className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600">
+        <button type="button" onClick={onConfirm} className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600">
         {confirmText}
         </button>
 
