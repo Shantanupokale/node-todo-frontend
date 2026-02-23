@@ -71,7 +71,7 @@ const Register = () => {
           <div className="space-y-1">
             <label className="text-sm font-medium">Password</label>
             <input
-              type="text"
+              type="password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

@@ -67,6 +67,11 @@ const TodoList = () => {
 
       {loading ? (
         <p className="text-center text-gray-500">Loading Todos...</p>
+      ) : todos.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+          <p className="text-lg font-semibold tracking-wide">No Todo Found</p>
+<p className="text-sm">Try adjusting your search or filters</p>
+        </div>
       ) : viewMode === "list" ? (
         <div className="space-y-4">
           {todos.map((todo) => (

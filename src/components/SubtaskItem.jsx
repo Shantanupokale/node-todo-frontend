@@ -49,9 +49,9 @@ const SubtaskItem = ({ subtask, onStatusChange, onDelete }) => {
           onChange={(e) => handleStatusUpdate(e.target.value)}
           className={`px-1 py-0.5 rounded text-[10px] border outline-none ${statusStyles[subtask.status]}`}
         >
-          <option value={STATUS.IN_PROGRESS}>in-progress</option>
-          <option value={STATUS.ON_HOLD}>on-hold</option>
-          <option value={STATUS.COMPLETE}>complete</option>
+          <option value={STATUS.IN_PROGRESS}>IN-PROGRESS</option>
+          <option value={STATUS.ON_HOLD}>ON-HOLD</option>
+          <option value={STATUS.COMPLETE}>COMPLETE</option>
         </select>
 
         <button

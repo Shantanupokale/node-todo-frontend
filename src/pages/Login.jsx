@@ -61,15 +61,15 @@ const Login = () => {
           </div>
 
           <div className="space-y-1">
-              <label className="text-sm font-medium">Password</label>
+            <label className="text-sm font-medium">Password</label>
             <input
-              type="text"
+              type="password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-300 px-4 py-2.5 rounded-lg  transition-all"
-              required 
-              />
+              required
+            />
           </div>
 
           <button

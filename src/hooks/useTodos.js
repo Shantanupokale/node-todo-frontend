@@ -17,7 +17,7 @@ export const useTodos = (showToast) => {
 
   const fetchTodos = useCallback(async () => {
     try {
-    const response = await TodoService.getTodos(page, limit, debouncedSearch , showBookmarked);
+    const response = await TodoService.getTodos(page, limit, debouncedSearch , showBookmarked ,filterStatus);
       setTodos(response.data);
       setTotalPages(response.pagination.totalPages);
     } catch (err) {
@@ -26,7 +26,7 @@ export const useTodos = (showToast) => {
     } finally {
       setLoading(false);
     }
-},[page, limit ,debouncedSearch , showBookmarked]);
+},[page, limit ,debouncedSearch , showBookmarked , filterStatus]);
 
 
   const filteredTodos = !filterStatus
@@ -35,7 +35,7 @@ export const useTodos = (showToast) => {
 
   useEffect(() => {
     fetchTodos();
-  }, [page, limit, debouncedSearch, showBookmarked]);
+  }, [page, limit, debouncedSearch, showBookmarked , filterStatus]);
 
   const addTodo = async (title, description, categoryId) => {
     try {
@@ -98,14 +98,14 @@ export const useTodos = (showToast) => {
   };
 
   const toggleBookmark = async (id) => {
-    try {
-      const response = await TodoService.toggleBookmark(id);
-      setTodos((prev) => prev.map((t) => (t.id === id ? response.data : t)));
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
+  try {
+    await TodoService.toggleBookmark(id);
+    fetchTodos();  
+    showToast("Bookmark updated", "info");
+  } catch (err) {
+    console.error(err.message);
+  }
+};
   return {
     todos: filteredTodos,
     loading,

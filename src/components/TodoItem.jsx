@@ -93,10 +93,10 @@ const TodoItem = ({ todo, onDelete, onStatusChange , onEdit , onStartEdit , edit
             </span>
           )}
           <select value={todo.status} onChange={(e) => onStatusChange(todo.id, e.target.value)}
-            className={`px-3 py-2 rounded-md border text-sm  font-medium transition outline-none ${statusStyles[todo.status]}`} >
-            <option value={STATUS.IN_PROGRESS}>in-progress</option>
-            <option value={STATUS.ON_HOLD}>on-hold</option>
-            <option value={STATUS.COMPLETE}>complete</option>
+            className={`p-2 rounded-md border text-[11px]  font-medium transition outline-none ${statusStyles[todo.status]}`} >
+            <option value={STATUS.IN_PROGRESS}>IN-PROGRESS</option>
+            <option value={STATUS.ON_HOLD}>ON-HOLD</option>
+            <option value={STATUS.COMPLETE}>COMPLETE</option>
           </select>
 
           <button onClick={() => onStartEdit(todo.id)} className="text-gray-600 hover:text-blue-500">
