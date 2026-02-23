@@ -3,8 +3,9 @@ import { Trash2 , Pencil, Heart ,ChevronUp , ListPlus } from "lucide-react";
 import Modal from "./ui/Modal";
 import { STATUS, statusStyles } from "../constants/statusStyles";
 import SubtaskPanel from "./SubtaskPanel";
+import StarRating from "./ui/StarRating";
 
-const TodoItem = ({ todo, onDelete, onStatusChange , onEdit , onStartEdit , editingId , onToggleBookmark, onRefresh}) => {
+const TodoItem = ({ todo, onDelete, onStatusChange , onEdit , onStartEdit , editingId , onToggleBookmark, onRefresh , updateRating}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSubtasks, setShowSubtasks] = useState(false);
   const [editedTitle, setEditedTitle] = useState(todo.title);
@@ -73,16 +74,23 @@ const TodoItem = ({ todo, onDelete, onStatusChange , onEdit , onStartEdit , edit
               </div>
             </div>
           ) : (
-            <span
-              className={`text-lg ${
-                todo.status === "complete"
-                  ? "line-through text-gray-400 text-sm"
-                : ""}`}>
-              {todo.title}
-            <div className=" text-gray-400 text-xs">
-              {todo.description}
-            </div>
-            </span>
+            <div>
+  <span className={`text-lg ${todo.status === "complete" ? "line-through text-gray-400" : ""}`}>
+    {todo.title}
+  </span>
+  <div className="text-gray-400 text-xs">
+    {todo.description}
+  </div>
+  <div className="flex items-center gap-3 mt-2">
+    <StarRating
+      value={todo.rating || 0}
+      max={5}
+      step={0.5}
+      onChange={(newRating) => updateRating(todo.id, newRating)}
+    />
+    <span className="text-sm text-gray-500">{Number(todo.rating ?? 0).toFixed(1)}</span>
+  </div>
+</div>
           )}
         </div>
 

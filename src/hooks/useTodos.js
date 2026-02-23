@@ -15,19 +15,22 @@ export const useTodos = (showToast) => {
   const [showBookmarked, setShowBookmarked] = useState(false);
 
 
-  const fetchTodos = useCallback(async () => {
-    try {
+const fetchTodos = useCallback(async () => {
+  try {
     const response = await TodoService.getTodos(page, limit, debouncedSearch , showBookmarked ,filterStatus);
-      setTodos(response.data);
-      setTotalPages(response.pagination.totalPages);
-    } catch (err) {
-      console.error(err.message);
-      setTodos([]);
-    } finally {
-      setLoading(false);
-    }
+    const todosWithFloatRating = response.data.map(todo => ({
+      ...todo,
+      rating: parseFloat(todo.rating ?? 0),
+    }));
+    setTodos(todosWithFloatRating);
+    setTotalPages(response.pagination.totalPages);
+  } catch (err) {
+    console.error(err.message);
+    setTodos([]);
+  } finally {
+    setLoading(false);
+  }
 },[page, limit ,debouncedSearch , showBookmarked , filterStatus]);
-
 
   const filteredTodos = !filterStatus
     ? todos
@@ -106,6 +109,17 @@ export const useTodos = (showToast) => {
     console.error(err.message);
   }
 };
+
+const updateRating = async (id, rating) => {
+    try {
+      await TodoService.updateRating(id, rating);
+      fetchTodos();
+      showToast("Rating updated", "success");
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   return {
     todos: filteredTodos,
     loading,
@@ -128,5 +142,6 @@ export const useTodos = (showToast) => {
     setShowBookmarked,
     toggleBookmark,
     fetchTodos,
+    updateRating
   };
 };

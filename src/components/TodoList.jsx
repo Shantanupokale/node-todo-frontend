@@ -16,7 +16,7 @@ const TodoList = () => {
   const { toast, showToast } = useToast();
   const [viewMode, setViewMode] = useState("list");
   const { todos, deleteTodo , updateStatus, editTodo, loading,  addTodo, startEdit ,
-     editingId, filterStatus, setFilterStatus , page ,limit ,setPage ,setLimit ,totalPages , search ,setSearch , showBookmarked ,setShowBookmarked ,toggleBookmark ,fetchTodos
+     editingId, filterStatus, setFilterStatus , page ,limit ,setPage ,setLimit ,totalPages , search ,setSearch , showBookmarked ,setShowBookmarked ,toggleBookmark ,fetchTodos , updateRating
   } = useTodos(showToast);
 
   useEffect(() => {
@@ -85,6 +85,7 @@ const TodoList = () => {
               editingId={editingId}
               onToggleBookmark={toggleBookmark}
               onRefresh={fetchTodos}
+              updateRating={updateRating}
             />
           ))}
         </div>

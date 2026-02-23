@@ -76,11 +76,24 @@ const toggleBookmark = async (id) => {
   return await res.json();
 };
 
+const updateRating = async (id, rating) => {
+  const res = await fetch(`${BASE_URL}/${id}/rating`, {
+    method: "PATCH",
+    headers: authHeaders(),
+    body: JSON.stringify({ rating }),
+  });
+
+  if (!res.ok) throw new Error("Failed to update rating");
+  const json = await res.json();
+  return json.data;
+};
+
 export const TodoService = {
   getTodos,
   getTodoById,
   createTodo,
   updateTodo,
   deleteTodo,
-  toggleBookmark
+  toggleBookmark,
+  updateRating
 };
