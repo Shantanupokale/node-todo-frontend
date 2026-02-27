@@ -27,8 +27,17 @@ const [token, setToken] = useState(
 }, [token, user]);
 
   const register = async (data) => {
-    return await AuthService.register(data);
-  };
+  await AuthService.register(data);
+
+  // Immediately login after register
+  const response = await AuthService.login({
+    email: data.email,
+    password: data.password
+  });
+
+  setToken(response.token);
+  setUser(response.user);
+};
 
   const login = async (data) => {
     const response = await AuthService.login(data);

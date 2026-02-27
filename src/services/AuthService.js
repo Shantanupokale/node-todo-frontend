@@ -6,11 +6,14 @@ const register = async (data) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
+  
+  const json = await res.json();   
 
-    if (!res.ok) {
+  if (!res.ok) {
     console.log(json);   
     throw new Error(json.message || "Registration failed");
   }
+  return json;
 };
 
 const login = async (data) => {
@@ -20,8 +23,9 @@ const login = async (data) => {
     body: JSON.stringify(data)
   });
 
-  if (!res.ok) throw new Error("Login failed");
-  return await res.json();
+  const json = await res.json();  
+  if (!res.ok) throw new Error(json.message || "Login failed");
+  return json;
 };
 
 export const AuthService = {
